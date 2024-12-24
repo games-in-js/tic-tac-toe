@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Gamepad2 } from "lucide-react";
 import Board from "./components/Board";
 import { BoardState } from "./types";
-import { checkWinner } from "./helpers/game-logic";
+import { checkWinner, isBoardFull } from "./helpers/game-logic";
 
 function App() {
   // [x,o,x
@@ -10,9 +10,11 @@ function App() {
   //  x,o,x ]
   const [board, setBoard] = useState<BoardState>(Array(9).fill(null));
   const winner = checkWinner(board);
+  const isDraw = !winner && isBoardFull(board);
 
   const getGameStatus = () => {
     if (winner) return `Player ${winner} wins!`;
+    if (isDraw) return "It's a Draw!";
     return `Player ${currentPlayer}'s Turn`;
   };
 
@@ -45,7 +47,7 @@ function App() {
           </p>
         </div>
 
-        <Board board={board} onClick={handleClick} />
+        <Board board={board} winner={winner} onClick={handleClick} />
       </div>
     </main>
   );
