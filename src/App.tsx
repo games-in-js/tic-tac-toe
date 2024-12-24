@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Gamepad2 } from "lucide-react";
+import { Gamepad2, RotateCcw } from "lucide-react";
 import Board from "./components/Board";
 import { BoardState } from "./types";
 import { checkWinner, isBoardFull } from "./helpers/game-logic";
@@ -48,6 +48,15 @@ function App() {
         </div>
 
         <Board board={board} winner={winner} onClick={handleClick} />
+
+        {(winner || isDraw) && (
+          <div className="mt-8 flex justify-center">
+            <button className="group flex items-center gap-2 rounded-lg bg-pink px-6 py-3 text-sm text-white hover:opacity-90">
+              Restart Game
+              <RotateCcw className="transition-transform duration-500 group-hover:-rotate-180" />
+            </button>
+          </div>
+        )}
       </div>
     </main>
   );
