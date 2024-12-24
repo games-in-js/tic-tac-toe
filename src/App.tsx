@@ -9,9 +9,18 @@ function App() {
   //  x,o,x ]
   const [board, setBoard] = useState<BoardState>(Array(9).fill(null));
 
+  // Rodada 0: [null, null, null, null, null, null, null, null, null]
+  // Rodada 1: ["X", null, null, null, null, null, null, null, null]
+  // Rodada 2: ["X", null, "O", null, null, null, null, null, null]
+  // Rodada 3: ["X", "X", "O", null, null, null, null, null, null]
+  // módulo % => 0 / 2 = 0
+  // 1 % 2 = 0.5
+  // 2 % 2 = 0
+  // 3 / 2 = 1 !==0
+  const currentPlayer = board.filter(Boolean).length % 2 === 0 ? "X" : "O";
+
   const handleClick = (index: number) => {
-    console.log("click", index);
-    setBoard(board.map((square, i) => (index === i ? "X" : square)));
+    setBoard(board.map((square, i) => (index === i ? currentPlayer : square)));
   };
 
   return (
