@@ -2,12 +2,19 @@ import { useState } from "react";
 import { Gamepad2 } from "lucide-react";
 import Board from "./components/Board";
 import { BoardState } from "./types";
+import { checkWinner } from "./helpers/game-logic";
 
 function App() {
   // [x,o,x
   //  x,o,x
   //  x,o,x ]
   const [board, setBoard] = useState<BoardState>(Array(9).fill(null));
+  const winner = checkWinner(board);
+
+  const getGameStatus = () => {
+    if (winner) return `Player ${winner} wins!`;
+    return `Player ${currentPlayer}'s Turn`;
+  };
 
   // Rodada 0: [null, null, null, null, null, null, null, null, null]
   // Rodada 1: ["X", null, null, null, null, null, null, null, null]
@@ -20,6 +27,7 @@ function App() {
   const currentPlayer = board.filter(Boolean).length % 2 === 0 ? "X" : "O";
 
   const handleClick = (index: number) => {
+    if (board[index] || winner) return;
     setBoard(board.map((square, i) => (index === i ? currentPlayer : square)));
   };
 
@@ -33,7 +41,7 @@ function App() {
 
         <div className="mb-6 text-center">
           <p className="text-xl font-semibold text-gray-100">
-            Player {currentPlayer}'s turn
+            {getGameStatus()}
           </p>
         </div>
 
